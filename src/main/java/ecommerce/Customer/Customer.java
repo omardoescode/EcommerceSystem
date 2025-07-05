@@ -1,28 +1,28 @@
 package main.java.ecommerce.Customer;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import main.java.ecommerce.Cart.Cart;
+import main.java.ecommerce.Order.Order;
 
 public class Customer {
-	private String customer_id;
-	private String name;
+	private String username;
 	private String address;
 	private double balance;
 	private Cart cart;
+	private List<Order> orders;
 
-	Customer(String customer_id, String name, String address, double balance) {
-		this.customer_id = customer_id;
-		this.name = name;
+	public Customer(String username, String address, double balance) {
+		this.username = username;
 		this.address = address;
 		this.balance = balance;
 		this.cart = new Cart();
+		this.orders = new ArrayList<>();
 	}
 
-	public String getIdentifier() {
-		return customer_id;
-	}
-
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
 	public String getAddress() {
@@ -35,5 +35,17 @@ public class Customer {
 
 	public void updateBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public boolean canAfford(double balance) {
+		return balance > this.balance;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void addOrder(Order ord) {
+		orders.add(ord);
 	}
 }

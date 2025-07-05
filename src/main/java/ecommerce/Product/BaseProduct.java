@@ -6,9 +6,9 @@ public class BaseProduct implements Product {
 	private String identifier;
 	private String name;
 	private int quantity;
-	private int price;
+	private double price;
 
-	BaseProduct(String identifier, String name, int quantity, int price) {
+	BaseProduct(String identifier, String name, int quantity, double price) {
 		this.identifier = identifier;
 		this.name = name;
 		this.quantity = quantity;
@@ -27,11 +27,11 @@ public class BaseProduct implements Product {
 		return quantity;
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public int getTotalPrice() {
+	public double getTotalPrice() {
 		return price * quantity;
 	}
 

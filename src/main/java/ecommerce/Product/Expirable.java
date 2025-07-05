@@ -1,5 +1,5 @@
 package main.java.ecommerce.Product;
 
-interface Expirable extends Feature {
+public interface Expirable extends Feature {
 	boolean isExpired();
 }

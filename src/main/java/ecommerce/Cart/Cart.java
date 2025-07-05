@@ -3,6 +3,7 @@ package main.java.ecommerce.Cart;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.PrintStream;
 
 public class Cart {
 	private final Map<String, Integer> items;
@@ -19,9 +20,7 @@ public class Cart {
 	}
 
 	public void addItem(CartItem item) {
-		for (int i = 0; i < items.size(); i++) {
-			items.merge(item.productIdentifier(), item.quantity(), Integer::sum);
-		}
+		items.merge(item.productIdentifier(), item.quantity(), Integer::sum);
 	}
 
 	public void removeItem(String itemId) {
@@ -37,5 +36,19 @@ public class Cart {
 			items.put(itemId, existingQuantity - quantity);
 		else
 			items.remove(itemId);
+	}
+
+	public boolean isEmpty() {
+		return items.isEmpty();
+	}
+
+	public void clear() {
+		items.clear();
+	}
+
+	public void report(PrintStream out) {
+		for (Map.Entry<String, Integer> entry : items.entrySet()) {
+			out.printf("Product ID: %s, Quantity: %d%n", entry.getKey(), entry.getValue());
+		}
 	}
 }

@@ -23,11 +23,11 @@ public class ShippableProduct implements Product, Shippable {
 		return product.getQuantity();
 	}
 
-	public int getPrice() {
+	public double getPrice() {
 		return product.getPrice();
 	}
 
-	public int getTotalPrice() {
+	public double getTotalPrice() {
 		return product.getTotalPrice();
 	}
 

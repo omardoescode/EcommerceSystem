@@ -9,9 +9,9 @@ public interface Product {
 
 	int getQuantity();
 
-	int getPrice();
+	double getPrice();
 
-	int getTotalPrice();
+	double getTotalPrice();
 
 	void setQuantity(int quantity);
 

@@ -19,5 +19,5 @@ public interface Product {
 
 	boolean isAvailable();
 
-	Optional<Product> asFeature(Product feature);
+	<T extends Feature> Optional<T> asFeature(Class<T> featureType);
 }

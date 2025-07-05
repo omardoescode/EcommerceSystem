@@ -47,7 +47,7 @@ public class BaseProduct implements Product {
 		return this.quantity > 0;
 	}
 
-	public Optional<Product> asFeature(Product feature) {
+	public <T extends Feature> Optional<T> asFeature(Class<T> featureType) {
 		return Optional.empty();
 	}
 }

@@ -52,6 +52,6 @@ public class ExpirableProduct implements Product, Expirable {
 	}
 
 	public boolean isExpired() {
-		return new Date().after(expirationDate);
+		return new Date().after(expiry_date);
 	}
 }

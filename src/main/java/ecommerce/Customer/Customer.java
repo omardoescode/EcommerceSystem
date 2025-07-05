@@ -48,4 +48,8 @@ public class Customer {
 	public void addOrder(Order ord) {
 		orders.add(ord);
 	}
+
+	public List<Order> getOrderHistory() {
+		return orders;
+	}
 }

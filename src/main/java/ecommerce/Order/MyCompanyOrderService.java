@@ -11,52 +11,49 @@ import main.java.ecommerce.Payment.PaymentService;
 import main.java.ecommerce.Shipping.ShippingService;
 
 public class MyCompanyOrderService implements OrderService {
-  private int orderId = 0;
-  private final Supplier<PaymentService> paymentServiceFactory;
-  private final Supplier<ShippingService> shippingServiceFactory;
-  private final Inventory inv;
+	private int orderId = 0;
+	private final PaymentService paymentService;
+	private final ShippingService shippingService;
+	private final Inventory inv;
 
-  public MyCompanyOrderService(Supplier<PaymentService> paymentServiceFactory,
-      Supplier<ShippingService> shippingServiceFactory, Inventory inv) {
-    this.shippingServiceFactory = shippingServiceFactory;
-    this.paymentServiceFactory = paymentServiceFactory;
-    this.inv = inv;
-  }
+	public MyCompanyOrderService(PaymentService paymentService, ShippingService shippingService, Inventory inv) {
+		this.shippingService = shippingService;
+		this.paymentService = paymentService;
+		this.inv = inv;
+	}
 
-  @Override
-  public void checkout(Customer customer, boolean ship) throws RuntimeException {
-    Cart cart = customer.getCart();
-    var items = cart.getItems();
+	@Override
+	public void checkout(Customer customer, boolean ship) throws RuntimeException {
+		Cart cart = customer.getCart();
+		var items = cart.getItems();
 
-    // Convert to List<OrderItem>
-    var orderItems = items.stream()
-        .map(cartItem -> new OrderItem(cartItem.productIdentifier(), cartItem.quantity())).toList();
+		// Convert to List<OrderItem>
+		var orderItems = items.stream()
+				.map(cartItem -> new OrderItem(cartItem.productIdentifier(), cartItem.quantity())).toList();
 
-    // Place the order
-    String newOrderId = Integer.toString(orderId++);
-    Order ord = new Order(newOrderId, customer.getUsername(), orderItems);
-    ord.setStatus(OrderStatus.PROCESSING);
+		// Place the order
+		String newOrderId = Integer.toString(orderId++);
+		Order ord = new Order(newOrderId, customer.getUsername(), orderItems);
+		ord.setStatus(OrderStatus.PROCESSING);
 
-    // Make sure inventory has all items
-    double payment = inv.getOrderProducts(ord).stream().mapToDouble(Product::getTotalPrice).sum();
+		// Make sure inventory has all items
+		double payment = inv.getOrderProducts(ord).stream().mapToDouble(Product::getTotalPrice).sum();
 
-    // Deduct the payment money
-    var paymentService = paymentServiceFactory.get();
-    var shippingService = shippingServiceFactory.get();
-    if (ship)
-      payment += shippingService.shipping_fees(ord);
-    paymentService.pay(customer, payment);
+		// Deduct the payment money
+		if (ship)
+			payment += shippingService.shipping_fees(ord);
+		paymentService.pay(customer, payment);
 
-    // Deduct the items from the inventory & cart
-    inv.process(ord);
-    cart.clear();
+		// Deduct the items from the inventory & cart
+		inv.process(ord);
+		cart.clear();
 
-    // Add order to history
-    ord.setStatus(OrderStatus.CONFIRMED);
-    customer.addOrder(ord);
+		// Add order to history
+		ord.setStatus(OrderStatus.CONFIRMED);
+		customer.addOrder(ord);
 
-    // shipping if needed
-    if (ship)
-      shippingService.ship(ord, customer.getAddress());
-  }
+		// shipping if needed
+		if (ship)
+			shippingService.ship(ord, customer.getAddress());
+	}
 }

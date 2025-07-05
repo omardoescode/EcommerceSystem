@@ -4,17 +4,14 @@ import java.util.ArrayList;
 
 import main.java.ecommerce.Product.Product;
 import main.java.ecommerce.Product.Shippable;
-import main.java.ecommerce.Customer.Customer;
 
 class MyCompanyShippingService implements ShippingService {
-	private final Customer customer;
 	private double fees_per_kilogram;
 
-	MyCompanyShippingService(Customer customer, double fees_per_kilogram) {
+	MyCompanyShippingService(double fees_per_kilogram) {
 		if (fees_per_kilogram < 0)
 			fees_per_kilogram = 0;
 		this.fees_per_kilogram = fees_per_kilogram;
-		this.customer = customer;
 	}
 
 	public double shipping_fees(ArrayList<Product> products) throws IllegalArgumentException {
@@ -26,12 +23,13 @@ class MyCompanyShippingService implements ShippingService {
 		return totalWeight;
 	}
 
-	public void ship(ArrayList<Product> products) throws IllegalArgumentException {
+	public void ship(ArrayList<Product> products, String location) throws IllegalArgumentException {
 		// Validate that products are shippable
 		for (var product : products)
 			if (product.asFeature(Shippable.class).isEmpty())
 				throw new IllegalArgumentException("Product " + product.getName() + " is not shippable");
 
-		// TOOD: Report these products to admin, to ship them
+		// TODO: Report these products to admin, to ship them
+		System.out.println("Shipping to " + location + " has begun");
 	}
 }
